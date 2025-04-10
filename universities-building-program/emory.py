@@ -29,11 +29,18 @@ def handle_message(message: str) -> str:
         #   2. Verify the response status.
         #   3. Parse the JSON data to extract "setup" and "punchline".
         #   4. Return the joke as a formatted string.
-        pass
+        response = requests.get('https://official-joke-api.appspot.com/random_joke')
+        if response.status_code == 200:
+            joke_data = response.json()
+            setup = joke_data.get('setup', '')
+            punchline = joke_data.get('punchline', '')
+            return f"{setup}\n{punchline}"
+        else:
+            return "Sorry, I couldn't fetch a joke at the moment. Please try again later."
+        #pass
     else:
         return "I'm sorry, I didn't understand your message."
 
-# Optional testing block:
-# if __name__ == "__main__":
-#    user_input = input("Enter a message for the agent: ")
-#    print(handle_message(user_input))
+if __name__ == "__main__":
+    user_input = input("Enter a message for the agent: ")
+    print(handle_message(user_input))
